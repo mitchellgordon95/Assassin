@@ -1,0 +1,54 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+
+    <div><h1>Register</h1></div>
+    <div>Your name:</div>
+    <input type="text" id="name">
+    <div>Your face:</div>
+    <input type="file" id="face">
+    <div><button id="submit">submit</button></div>
+
+  </div>
+
+  <script type="text/javascript">
+    Parse.initialize("g9P13hQpOzCiGBV3zALzg04suIQGKRc5ZTVNVvYG", "c2fQ5OgH23b4ouzHJQ0Prjo28P4ESFrwWzJpV1bN");
+    var Assassin = Parse.Object.extend("Assassin");
+
+    $("#submit").click( function () {
+        var fileUploadControl = $("#face")[0];
+        if (fileUploadControl.files.length > 0) {
+            var file = fileUploadControl.files[0];
+            var name = "photo.jpg";
+            var parseFile = new Parse.File(name, file);
+
+            var a = new Assassin();
+            a.set("face", parseFile);
+            a.set("name", $("#name").val());
+            a.save({
+              success: function(object) {
+              alert('succ');
+
+              },
+              error: function(model, error) {
+              alert('fail');
+              }
+            });
+        }
+
+    });
+  </script>
+</body>
+
+</html>

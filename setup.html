@@ -1,0 +1,50 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+
+      <div>Don't fucking press this button</div>
+    <div><button id="submit">Do the thing.</button></div>
+
+  </div>
+
+  <script type="text/javascript">
+    Parse.initialize("g9P13hQpOzCiGBV3zALzg04suIQGKRc5ZTVNVvYG", "c2fQ5OgH23b4ouzHJQ0Prjo28P4ESFrwWzJpV1bN");
+    var Assassin = Parse.Object.extend("Assassin");
+
+    $("#submit").click( function () {
+        var Assassin = Parse.Object.extend("Assassin");
+        var queryObject = new Parse.Query(Assassin);
+
+        var first;
+        queryObject.find({
+            success: function (results) {
+                for (var i = 0; i < results.length; i++) {
+                    var next = (i + 1) % results.length;
+
+                    results[i].set("target", results[next].id);
+                    results[i].save();
+
+                }
+                alert("done.");
+            },
+            error: function (error) {
+                alert("Error: " + error.code + " " + error.message);
+            }       
+        });
+
+    });
+  </script>
+</body>
+
+</html>

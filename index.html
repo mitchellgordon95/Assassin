@@ -1,0 +1,80 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+
+    <div><h1>Assassin VandyHacks</h1></div>
+    <div id="firstpart">
+        <div>Your secret word:</div>
+        <input type="text" id="secret">
+        <div><button id="submit">submit</button></div>
+        or
+        <div><a href="register.html">register</a></button></div>
+    </div>
+    <div id="secondpart">
+        <div>Your target:</div>
+        <img id="face">
+        <div>DON'T KEEP CLICKING THIS BUTTON. ONLY CLICK IT IF YOU'RE SURE</div>
+        <div><button id="killed">I killed 'em</button></div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    Parse.initialize("g9P13hQpOzCiGBV3zALzg04suIQGKRc5ZTVNVvYG", "c2fQ5OgH23b4ouzHJQ0Prjo28P4ESFrwWzJpV1bN");
+    var Assassin = Parse.Object.extend("Assassin");
+
+    $("#secondpart").hide();
+    $("#submit").click( function () {
+
+            var secret = $("#secret").val();
+            var query = new Parse.Query(Assassin);
+            query.get(secret, {
+              success: function(object) {
+                if (object.get("killed") == "true") {
+                    alert("sorry, u r ded.");
+                    return;
+                }
+                $("#firstpart").hide();
+                $("#secondpart").show();
+                query.get(object.get("target"), {
+                    success: function (targetObj) {
+                       $("#face").attr("src", targetObj.get("face").url()); 
+                       $("#killed").click(function() {
+                           targetObj.set("killed", "true");
+                           object.set("target",targetObj.get("target"));
+                           
+                           targetObj.save();
+                           object.save(); 
+                           alert("Good job. Refresh for your next target.");
+                       });
+                    },
+                    error: function(obj, anotherError) {
+                        alert("This app is too hacky! It doesn't work...");
+                        console.log(anotherError);
+                    }
+                });
+              },
+
+              error: function(object, error) {
+                // error is an instance of Parse.Error.
+                alert("This app is too hacky! It doesn't work...");
+                console.log(error);
+              }
+            });
+
+    });
+  </script>
+</body>
+
+</html>
