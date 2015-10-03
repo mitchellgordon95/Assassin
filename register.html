@@ -19,6 +19,7 @@
     <div>Your face:</div>
     <input type="file" id="face">
     <div><button id="submit">submit</button></div>
+    <div id="output"></div>
 
   </div>
 
@@ -38,7 +39,7 @@
             a.set("name", $("#name").val());
             a.save({
               success: function(object) {
-              alert('succ');
+              $("#output").html("Your secret is " + object.id + ". Write this down!!!</br><a href='index.html'>Go Back</a>");
 
               },
               error: function(model, error) {
