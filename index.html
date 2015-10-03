@@ -15,7 +15,7 @@
 
     <div><h1>Assassin VandyHacks</h1></div>
     <div id="firstpart">
-        <div>Your secret word:</div>
+        <div>If you've signed up, enter your secret word:</div>
         <input type="text" id="secret">
         <div><button id="submit">submit</button></div>
         or
@@ -44,6 +44,10 @@
                 if (object.get("killed") == "true") {
                     alert("sorry, u r ded.");
                     return;
+                }
+                if (object.get("target") == null) {
+                    alert("the game hasn't started yet. check back later");
+
                 }
                 $("#firstpart").hide();
                 $("#secondpart").show();
